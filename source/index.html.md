@@ -1,5 +1,5 @@
 ---
-title: API Reference
+title: Atmos API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
@@ -21,11 +21,14 @@ code_clipboard: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Atmos API! You can use our API to access cryptocurrency OHLCV candle data from Binance & Kraken. This data can be utilised and itegrated into your custom application.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in Curl, JavaScript, Python, and C#! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Here's a simple guide to walk you through generating Atmos API keys. 
+
+Alternatively you can register for an API key at our [portal](http://api.atmosbot.com/api).
+
 
 # Authentication
 
@@ -34,42 +37,50 @@ This example API documentation page was created with [Slate](https://github.com/
 ```ruby
 require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+api = Kittn::APIClient.authorize!('personalatmosapikey')
 ```
 
 ```python
 import kittn
 
-api = kittn.authorize('meowmeowmeow')
+api = kittn.authorize('personalatmosapikey')
 ```
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
+curl "https://api.atmosbot.tennant.dev/v1/kraken/pairs" \
+  -H "x-atmos-key: personalatmosapikey"
 ```
 
 ```javascript
 const kittn = require('kittn');
 
-let api = kittn.authorize('meowmeowmeow');
+let api = kittn.authorize('personalatmosapikey');
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Make sure to replace `personalatmosapikey` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+You can authenticate API keys to allow access the cryptocurrency candle data. 
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Atmos Authentication is header-based, and requires one parameter x-atmos-key:
+Your personalised API key is required for all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+`x-atmos-key: personalatmosapikey`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>personalatmosapikey</code> with your personal API key.
 </aside>
 
-# Kittens
 
-## Get All Kittens
+
+# Rate Limiting
+
+Atmos API requests are capped at 20 requests per minute. Exceeding this threshold will result in the return of a 429 response code.
+
+
+# Candle Data
+
+## Get All Pairs
 
 ```ruby
 require 'kittn'
@@ -86,8 +97,8 @@ api.kittens.get()
 ```
 
 ```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
+curl "http://api.atmosbot.com/v1/<exchange>/pairs" \
+  -H "x-atmos-key: personalatmosapikey"
 ```
 
 ```javascript
@@ -101,28 +112,29 @@ let kittens = api.kittens.get();
 
 ```json
 [
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
+  
+    "AAVEAUD",
+    "AAVEETH",
+    "AAVEEUR",
+    "AAVEGBP",
+    "AAVEUSD",
+    "AAVEXBT",
+    "ADAAUD",
+    "ADAETH",
+    "ADAEUR",
+    "ADAGBP",
+    "ADAUSD",
+    "ADAUSDT",
+
+
 ]
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all crypto currency pairings from a given exchange.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET http://api.atmosbot.com/v1/<exchange>/pairs/`
 
 ### Query Parameters
 
@@ -131,11 +143,11 @@ Parameter | Default | Description
 include_cats | false | If set to true, the result will also include cats.
 available | true | If set to false, the result will include kittens that have already been adopted.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+<aside class="notice">
+Remember — You need to add your Atmos API key to the header!
 </aside>
 
-## Get a Specific Kitten
+## Specific Pair OHLCV
 
 ```ruby
 require 'kittn'
@@ -152,8 +164,8 @@ api.kittens.get(2)
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
+curl "http://api.atmosbot.com/v1/<exchange>/symbol/ohlcv" \
+  -H "x-atmos-key: personalatmosapikey"
 ```
 
 ```javascript
@@ -167,29 +179,61 @@ let max = api.kittens.get(2);
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
+    "results": [{
+        "id": "607ec20c2972f20011a150d9",
+        "symbol": "ETHUSDT",
+        "startTime": "2021-04-20T12:00:00.000Z",
+        "ticks": [{
+            "time": "2021-04-20T12:00:00.000Z",
+            "open": "2193.87000",
+            "high": "2193.87000",
+            "low": "2193.87000",
+            "close": "2193.87000",
+            "baseVolume": "5.03426978",
+            "trades": 4
+        }, {
+            "time": "2021-04-20T12:01:00.000Z",
+            "open": "2191.10000",
+            "high": "2191.93000",
+            "low": "2190.55000",
+            "close": "2190.55000",
+            "baseVolume": "5.36900000",
+            "trades": 4
 ```
 
-This endpoint retrieves a specific kitten.
+This endpoint retrieves a specific pair. 
 
 <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET http://api.atmosbot.com/v1/<exchange>/symbol/ohlcv`
 
-### URL Parameters
+###  Limit Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the kitten to retrieve
+limit | The ID of the kitten to retrieve
 
-## Delete a Specific Kitten
+###  Page Parameters
+
+Parameter | Description
+--------- | -----------
+Page | The ID of the kitten to retrieve
+
+###  Start time Parameters
+
+Parameter | Description
+--------- | -----------
+start_time | The ID of the kitten to retrieve
+
+###  end time Parameters
+
+Parameter | Description
+--------- | -----------
+end_time | The ID of the kitten to retrieve
+
+## Pair Latest 
 
 ```ruby
 require 'kittn'
@@ -206,9 +250,8 @@ api.kittens.delete(2)
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
+curl "http://api.atmosbot.com/v1/<exchange>/symbol/ohlcv/latest" \
+  -H "Authorization: personalatmosapikey"
 ```
 
 ```javascript
@@ -222,16 +265,29 @@ let max = api.kittens.delete(2);
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
-}
+    "result": {
+        "time": "2021-04-20T11:39:00.000Z",
+        "open": "2178.21000",
+        "high": "2178.74000",
+        "low": "2178.21000",
+        "close": "2178.74000",
+        "baseVolume": "13.37782288",
+        "trades": 7
+    }
 ```
 
 This endpoint deletes a specific kitten.
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`GET http://api.atmosbot.com/v1/<exchange>/symbol/ohlcv/latest`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+ID | The ID of the kitten to delete
+
 
 ### URL Parameters
 
