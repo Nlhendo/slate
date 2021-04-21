@@ -48,7 +48,7 @@ api = kittn.authorize('personalatmosapikey')
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "https://api.atmosbot.tennant.dev/v1/kraken/pairs" \
+curl "https://api.atmosbot.com/v1/<exchange>/pairs" \
   -H "x-atmos-key: personalatmosapikey"
 ```
 
@@ -85,14 +85,14 @@ Atmos API requests are capped at 20 requests per minute. Exceeding this threshol
 ```ruby
 require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+api = Kittn::APIClient.authorize!('personalatmosapikey')
 api.kittens.get
 ```
 
 ```python
 import kittn
 
-api = kittn.authorize('meowmeowmeow')
+api = kittn.authorize('personalatmosapikey')
 api.kittens.get()
 ```
 
@@ -104,7 +104,7 @@ curl "http://api.atmosbot.com/v1/<exchange>/pairs" \
 ```javascript
 const kittn = require('kittn');
 
-let api = kittn.authorize('meowmeowmeow');
+let api = kittn.authorize('personalatmosapikey');
 let kittens = api.kittens.get();
 ```
 
@@ -138,10 +138,10 @@ This endpoint retrieves all crypto currency pairings from a given exchange.
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Description
+---------  | -----------
+`<exchange>` | must be changed to supported exchange of your choice `kraken` or `binance`.
+
 
 <aside class="notice">
 Remember — You need to add your Atmos API key to the header!
@@ -203,7 +203,7 @@ let max = api.kittens.get(2);
 
 This endpoint retrieves a specific pair. 
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+<aside class="warning">Replace <code>&lt;exchange&gt;</code> with the exchange of your choice.</aside>
 
 ### HTTP Request
 
@@ -211,27 +211,44 @@ This endpoint retrieves a specific pair.
 
 ###  Limit Parameters
 
+`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?limit=2`
+
 Parameter | Description
 --------- | -----------
-limit | The ID of the kitten to retrieve
+limit | limits the number of returned candle buckets
 
 ###  Page Parameters
 
+`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?page=5`
+
 Parameter | Description
 --------- | -----------
-Page | The ID of the kitten to retrieve
+Page | Allows you to view the candles from a specific page. The first element (page) will be 0.
+
 
 ###  Start time Parameters
 
+Utilising iso 8601 formating which can be described as follows: YYYY-MM-DDTHH:mm:ss. sssZ 
+
+The timezone is always UTC as denoted by the suffix "Z
+
+`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?start_time=2021-04-09T10:20:00.000Z`
+
 Parameter | Description
 --------- | -----------
-start_time | The ID of the kitten to retrieve
+start_time | sets start time of candle ticks
 
 ###  end time Parameters
 
+Utilising iso 8601 formating which can be described as follows: YYYY-MM-DDTHH:mm:ss. sssZ 
+
+The timezone is always UTC as denoted by the suffix "Z
+
+`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?end_time=2021-04-09T10:50:00.000Z`
+
 Parameter | Description
 --------- | -----------
-end_time | The ID of the kitten to retrieve
+end_time | sets end time of candle ticks
 
 ## Pair Latest 
 
@@ -276,22 +293,11 @@ let max = api.kittens.delete(2);
     }
 ```
 
-This endpoint deletes a specific kitten.
+This endpoint returns the latest candle tick for a specific crypto currency pairing.
 
 ### HTTP Request
 
 `GET http://api.atmosbot.com/v1/<exchange>/symbol/ohlcv/latest`
 
-### URL Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
 
