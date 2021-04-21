@@ -2,14 +2,13 @@
 title: Atmos API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
+  - shell: cURL
   - ruby
   - python
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+  - <a href='https://atmosbot.com/auth/sign-up'>Sign Up for an Atmos API Key</a>
 
 includes:
   - errors
@@ -238,7 +237,7 @@ Parameter | Description
 --------- | -----------
 start_time | sets start time of candle ticks
 
-###  end time Parameters
+###  End time Parameters
 
 Utilising iso 8601 formating which can be described as follows: YYYY-MM-DDTHH:mm:ss. sssZ 
 
@@ -249,6 +248,50 @@ The timezone is always UTC as denoted by the suffix "Z
 Parameter | Description
 --------- | -----------
 end_time | sets end time of candle ticks
+
+
+### Chaining Parameters
+
+All of the aformentioned parameters can be combined, composing of a series of field-value pairs.
+
+Example:
+
+`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?end_time=2021-04-09T10:50:00.000Z&page=0`
+
+> The request returns JSON structured like this:
+
+```json
+{
+    "results": [{
+        "id": "60702a4549522600129b5046",
+        "symbol": "ETHUSDT",
+        "startTime": "2021-04-09T10:20:00.000Z",
+        "ticks": [{
+            "time": "2021-04-09T10:20:00.000Z",
+            "open": "2099.37000",
+            "high": "2099.37000",
+            "low": "2099.37000",
+            "close": "2099.37000",
+            "baseVolume": "0.26256048",
+            "trades": 1
+        }, {
+            "time": "2021-04-09T10:22:00.000Z",
+            "open": "2098.43000",
+            "high": "2098.43000",
+            "low": "2098.43000",
+            "close": "2098.43000",
+            "baseVolume": "2.00000000",
+            "trades": 1
+        }, {
+            "time": "2021-04-09T10:23:00.000Z",
+            "open": "2098.00000",
+            "high": "2098.00000",
+            "low": "2098.00000",
+            "close": "2098.00000",
+            "baseVolume": "0.48935249",
+            "trades": 2
+        }]
+```
 
 ## Pair Latest 
 
