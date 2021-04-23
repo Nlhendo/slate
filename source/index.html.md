@@ -135,11 +135,14 @@ This endpoint retrieves all crypto currency pairings from a given exchange.
 
 `GET http://api.atmosbot.com/v1/<exchange>/pairs/`
 
+`<exchange>` | must be changed to supported exchange of your choice `kraken` or `binance`.
+
 ### Query Parameters
 
-Parameter | Description
----------  | -----------
-`<exchange>` | must be changed to supported exchange of your choice `kraken` or `binance`.
+Parameter | Type  | Required  |  Description
+---------  | ----------- | ---------  | ----------- | 
+`<exchange>`    |   Striing | Yes | must be changed to supported exchange of your choice `kraken` or `binance`.
+
 
 
 <aside class="notice">
@@ -206,48 +209,35 @@ This endpoint retrieves a specific pair.
 
 ### HTTP Request
 
-`GET http://api.atmosbot.com/v1/<exchange>/symbol/ohlcv`
+`GET /v1/<exchange>/symbol/ohlcv`
+
+
+###  Parameters
+
+Parameter | Type  | Required  |  Description
+---------  | ----------- | ---------  | ----------- | 
+limit | String | Optional | Limits the number of returned candle buckets
+page | String | Optional | Allows you to view the candles from a specific page. The first parameter value will be 0.
+start_time | String | Optional | sets start time of candle ticks ..Format ISO 8601  YYYY-MM-DDTHH:mm:ss. sssZ 
+end_time |  String | Optional | sets end time of candle ticks ..Format ISO 8601  YYYY-MM-DDTHH:mm:ss. sssZ 
 
 ###  Limit Parameters
 
-`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?limit=2`
-
-Parameter | Description
---------- | -----------
-limit | limits the number of returned candle buckets
-
-###  Page Parameters
-
-`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?page=5`
-
-Parameter | Description
---------- | -----------
-Page | Allows you to view the candles from a specific page. The first element (page) will be 0.
+`GET v1/<exchange>/symbol/ohlcv/?limit=2`
 
 
-###  Start time Parameters
 
-Utilising iso 8601 formating which can be described as follows: YYYY-MM-DDTHH:mm:ss. sssZ 
+`GET /v1/<exchange>/symbol/ohlcv/?page=5`
 
-The timezone is always UTC as denoted by the suffix "Z
 
-`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?start_time=2021-04-09T10:20:00.000Z`
 
-Parameter | Description
---------- | -----------
-start_time | sets start time of candle ticks
+`GET /v1/<exchange>/symbol/ohlcv/?start_time=2021-04-09T10:20:00.000Z`
 
-###  End time Parameters
 
-Utilising iso 8601 formating which can be described as follows: YYYY-MM-DDTHH:mm:ss. sssZ 
 
-The timezone is always UTC as denoted by the suffix "Z
+`GET /v1/<exchange>/symbol/ohlcv/?end_time=2021-04-09T10:50:00.000Z`
 
-`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?end_time=2021-04-09T10:50:00.000Z`
 
-Parameter | Description
---------- | -----------
-end_time | sets end time of candle ticks
 
 
 ### Chaining Parameters
@@ -256,7 +246,7 @@ All of the aformentioned parameters can be combined, composing of a series of fi
 
 Example:
 
-`GET http://api.atmosbot.com/v1/<exchange>/ETHUSDT/ohlcv/?end_time=2021-04-09T10:50:00.000Z&page=0`
+`GET v1/<exchange>/symbol/ohlcv/?end_time=2021-04-09T10:50:00.000Z&page=0`
 
 > The request returns JSON structured like this:
 
@@ -340,7 +330,7 @@ This endpoint returns the latest candle tick for a specific crypto currency pair
 
 ### HTTP Request
 
-`GET http://api.atmosbot.com/v1/<exchange>/symbol/ohlcv/latest`
+`GET /v1/<exchange>/symbol/ohlcv/latest`
 
 
 
