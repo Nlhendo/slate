@@ -31,7 +31,7 @@ Alternatively you can register for an API key at our [portal](https://api.atmosb
 
 # Authentication
 
-<>> To authorize, use this code:
+
 
 ```c
 
@@ -46,7 +46,7 @@ Alternatively you can register for an API key at our [portal](https://api.atmosb
 
 ```
 
-<>> Make sure to replace `youratmosapikey` with your API key.
+
 
 You can authenticate API keys to allow access the cryptocurrency candle data. 
 
