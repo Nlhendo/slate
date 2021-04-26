@@ -291,7 +291,7 @@
     </script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;c&quot;,&quot;python&quot;,&quot;javascript&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -302,7 +302,7 @@
       <img src="images/logo-9d0c8358.png" class="logo" alt="" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">cURL</a>
-              <a href="#" data-language-name="ruby">ruby</a>
+              <a href="#" data-language-name="c">C#</a>
               <a href="#" data-language-name="python">python</a>
               <a href="#" data-language-name="javascript">javascript</a>
         </div>
@@ -348,18 +348,41 @@
         <h1 id='introduction'>Introduction</h1>
 <p>Welcome to the Atmos API! You can use our API to access cryptocurrency OHLCV candle data from Binance &amp; Kraken. This data can be utilised and itegrated into your custom application.</p>
 
-<p>We have language bindings in Curl, JavaScript, Python, and C#! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>We have language bindings in cURL, JavaScript, Python, and C#! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
 
 <p>Here&#39;s a simple guide to walk you through generating Atmos API keys. </p>
 
 <p>Alternatively you can register for an API key at our <a href="https://api.atmosbot.com/api">portal</a>.</p>
 <h1 id='authentication'>Authentication</h1>
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<p>&lt;&gt;&gt; To authorize, use this code:</p>
+<div class="highlight"><pre class="highlight c tab-c"><code>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'youratmosapikey'</span><span class="p">)</span>
+</code></pre></div>
+<p>&lt;&gt;&gt; Make sure to replace <code>youratmosapikey</code> with your API key.</p>
+
+<p>You can authenticate API keys to allow access the cryptocurrency candle data. </p>
+
+<p>Atmos Authentication is header-based, and requires one parameter x-atmos-key:
+Your personalised API key is required for all API requests to the server in a header that looks like the following:</p>
+
+<p><code>x-atmos-key: youratmosapikey</code></p>
+
+<aside class="notice">
+You must replace <code>youratmosapikey</code> with your personal API key.
+</aside>
+<h1 id='rate-limiting'>Rate Limiting</h1>
+<p>Atmos API requests are capped at 20 requests per minute. Exceeding this threshold will result in the return of a 429 response code.</p>
+<h1 id='candle-data'>Candle Data</h1><h2 id='get-all-pairs'>Get All Pairs</h2><div class="highlight"><pre class="highlight c tab-c"><code><span class="n">var</span> <span class="n">client</span> <span class="o">=</span> <span class="n">new</span> <span class="nf">RestClient</span><span class="p">(</span><span class="s">"https://api.atmosbot.com/v1/&lt;exchange&gt;/pairs/"</span><span class="p">);</span>
+<span class="n">client</span><span class="p">.</span><span class="n">Timeout</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">var</span> <span class="n">request</span> <span class="o">=</span> <span class="n">new</span> <span class="nf">RestRequest</span><span class="p">(</span><span class="n">Method</span><span class="p">.</span><span class="n">GET</span><span class="p">);</span>
+<span class="n">request</span><span class="p">.</span><span class="n">AddHeader</span><span class="p">(</span><span class="s">"x-atmos-key"</span><span class="p">,</span> <span class="s">"youratmosapikey"</span><span class="p">);</span>
+<span class="n">request</span><span class="p">.</span><span class="n">AddHeader</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="s">"</span><span class="err">
+
+</span><span class="s">"</span><span class="p">);</span>
+<span class="n">IRestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">Content</span><span class="p">);</span>
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">http.client</span>
 
 <span class="n">conn</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="s">"api.atmosbot.com"</span><span class="p">)</span>
@@ -377,40 +400,20 @@
 </code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
 curl <span class="s2">"https://api.atmosbot.com/v1/&lt;exchange&gt;/pairs"</span> <span class="se">\</span>
   <span class="nt">-H</span> <span class="s2">"x-atmos-key: youratmosapikey"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">withCredentials</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">youratmosapikey</span><span class="dl">'</span><span class="p">);</span>
-</code></pre></div>
-<blockquote>
-<p>Make sure to replace <code>youratmosapikey</code> with your API key.</p>
-</blockquote>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">readystatechange</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
 
-<p>You can authenticate API keys to allow access the cryptocurrency candle data. </p>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">https://api.atmosbot.com/v1/&lt;exchange&gt;/pairs/</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="dl">"</span><span class="s2">x-atmos-key</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">youratmosapikey</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="dl">""</span><span class="p">,</span> <span class="dl">"</span><span class="se">\n\n</span><span class="dl">"</span><span class="p">);</span>
 
-<p>Atmos Authentication is header-based, and requires one parameter x-atmos-key:
-Your personalised API key is required for all API requests to the server in a header that looks like the following:</p>
-
-<p><code>x-atmos-key: youratmosapikey</code></p>
-
-<aside class="notice">
-You must replace <code>youratmosapikey</code> with your personal API key.
-</aside>
-<h1 id='rate-limiting'>Rate Limiting</h1>
-<p>Atmos API requests are capped at 20 requests per minute. Exceeding this threshold will result in the return of a 429 response code.</p>
-<h1 id='candle-data'>Candle Data</h1><h2 id='get-all-pairs'>Get All Pairs</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'youratmosapikey'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'youratmosapikey'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="n">kittens</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.atmosbot.com/v1/&lt;exchange&gt;/pairs"</span> <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s2">"x-atmos-key: youratmosapikey"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">youratmosapikey</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="kd">get</span><span class="p">();</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -437,7 +440,7 @@ You must replace <code>youratmosapikey</code> with your personal API key.
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>GET http://api.atmosbot.com/v1/&lt;exchange&gt;/pairs/</code></p>
 
-<p><code>&lt;exchange&gt;</code> | must be changed to supported exchange of your choice <code>kraken</code> or <code>binance</code>.</p>
+<p><code>&lt;exchange&gt;</code> | must be changed to supported exchange of your choice <code>kraken</code> , <code>binance</code> or <code>coinbase</code>.</p>
 <h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -451,27 +454,52 @@ You must replace <code>youratmosapikey</code> with your personal API key.
 <td><code>&lt;exchange&gt;</code></td>
 <td>Striing</td>
 <td>Yes</td>
-<td>must be changed to supported exchange of your choice <code>kraken</code> or <code>binance</code>.</td>
+<td>must be changed to supported exchange of your choice <code>kraken</code> , <code>binance</code> or <code>coinbase</code>.</td>
 </tr>
 </tbody></table>
 
 <aside class="notice">
 Remember — You need to add your Atmos API key to the header!
 </aside>
-<h2 id='specific-pair-ohlcv'>Specific Pair OHLCV</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h2 id='specific-pair-ohlcv'>Specific Pair OHLCV</h2><div class="highlight"><pre class="highlight c tab-c"><code><span class="n">var</span> <span class="n">client</span> <span class="o">=</span> <span class="n">new</span> <span class="nf">RestClient</span><span class="p">(</span><span class="s">"https://api.atmosbot.com/v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv"</span><span class="p">);</span>
+<span class="n">client</span><span class="p">.</span><span class="n">Timeout</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">var</span> <span class="n">request</span> <span class="o">=</span> <span class="n">new</span> <span class="nf">RestRequest</span><span class="p">(</span><span class="n">Method</span><span class="p">.</span><span class="n">GET</span><span class="p">);</span>
+<span class="n">request</span><span class="p">.</span><span class="n">AddHeader</span><span class="p">(</span><span class="s">"x-atmos-key"</span><span class="p">,</span> <span class="s">"youratmosapikey"</span><span class="p">);</span>
+<span class="n">request</span><span class="p">.</span><span class="n">AddHeader</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="s">"</span><span class="err">
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+</span><span class="s">"</span><span class="p">);</span>
+<span class="n">IRestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">Content</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">http.client</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="n">kittens</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.atmosbot.com/v1/&lt;exchange&gt;/symbol/ohlcv"</span> <span class="se">\</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="s">"api.atmosbot.com"</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s">''</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'x-atmos-key'</span><span class="p">:</span> <span class="s">'youratmosapikey'</span><span class="p">,</span>
+  <span class="s">''</span><span class="p">:</span> <span class="s">'
+
+'</span>
+<span class="p">}</span>
+<span class="n">conn</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"GET"</span><span class="p">,</span> <span class="s">"/v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv"</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.atmosbot.com/v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv"</span> <span class="se">\</span>
   <span class="nt">-H</span> <span class="s2">"x-atmos-key: youratmosapikey"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">withCredentials</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">meowmeowmeow</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">readystatechange</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">https://api.atmosbot.com/v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="dl">"</span><span class="s2">x-atmos-key</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">youratmosapikey</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="dl">""</span><span class="p">,</span> <span class="dl">"</span><span class="se">\n\n</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -501,8 +529,10 @@ Remember — You need to add your Atmos API key to the header!
 <p>This endpoint retrieves a specific pair. </p>
 
 <aside class="warning">Replace <code>&lt;exchange&gt;</code> with the exchange of your choice.</aside>
+
+<aside class="warning">Replace <code>&lt;symbol&gt;</code> with the crypto pairing of your choice e.g. BTCUSDT .</aside>
 <h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET /v1/&lt;exchange&gt;/symbol/ohlcv</code></p>
+<p><code>GET /v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv</code></p>
 <h3 id='parameters'>Parameters</h3>
 <table><thead>
 <tr>
@@ -538,19 +568,19 @@ Remember — You need to add your Atmos API key to the header!
 </tr>
 </tbody></table>
 <h3 id='limit-parameters'>Limit Parameters</h3>
-<p><code>GET v1/&lt;exchange&gt;/symbol/ohlcv/?limit=2</code></p>
+<p><code>GET v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/?limit=2</code></p>
 
-<p><code>GET /v1/&lt;exchange&gt;/symbol/ohlcv/?page=5</code></p>
+<p><code>GET /v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/?page=5</code></p>
 
-<p><code>GET /v1/&lt;exchange&gt;/symbol/ohlcv/?start_time=2021-04-09T10:20:00.000Z</code></p>
+<p><code>GET /v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/?start_time=2021-04-09T10:20:00.000Z</code></p>
 
-<p><code>GET /v1/&lt;exchange&gt;/symbol/ohlcv/?end_time=2021-04-09T10:50:00.000Z</code></p>
+<p><code>GET /v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/?end_time=2021-04-09T10:50:00.000Z</code></p>
 <h3 id='chaining-parameters'>Chaining Parameters</h3>
 <p>All of the aformentioned parameters can be combined, composing of a series of field-value pairs.</p>
 
 <p>Example:</p>
 
-<p><code>GET v1/&lt;exchange&gt;/symbol/ohlcv/?end_time=2021-04-09T10:50:00.000Z&amp;page=0</code></p>
+<p><code>GET v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/?end_time=2021-04-09T10:50:00.000Z&amp;page=0</code></p>
 
 <blockquote>
 <p>The request returns JSON structured like this:</p>
@@ -585,20 +615,46 @@ Remember — You need to add your Atmos API key to the header!
             </span><span class="nl">"baseVolume"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.48935249"</span><span class="p">,</span><span class="w">
             </span><span class="nl">"trades"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
         </span><span class="p">}]</span><span class="w">
-</span></code></pre></div><h2 id='pair-latest'>Pair Latest</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+</span></code></pre></div><h2 id='pair-latest'>Pair Latest</h2><div class="highlight"><pre class="highlight c tab-c"><code><span class="n">var</span> <span class="n">client</span> <span class="o">=</span> <span class="n">new</span> <span class="nf">RestClient</span><span class="p">(</span><span class="s">"https://api.atmosbot.com/v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/latest"</span><span class="p">);</span>
+<span class="n">client</span><span class="p">.</span><span class="n">Timeout</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">var</span> <span class="n">request</span> <span class="o">=</span> <span class="n">new</span> <span class="nf">RestRequest</span><span class="p">(</span><span class="n">Method</span><span class="p">.</span><span class="n">GET</span><span class="p">);</span>
+<span class="n">request</span><span class="p">.</span><span class="n">AddHeader</span><span class="p">(</span><span class="s">"x-atmos-key"</span><span class="p">,</span> <span class="s">"youratmosapikey"</span><span class="p">);</span>
+<span class="n">request</span><span class="p">.</span><span class="n">AddHeader</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="s">"</span><span class="err">
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+</span><span class="s">"</span><span class="p">);</span>
+<span class="n">IRestResponse</span> <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
+<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">Content</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">http.client</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="n">kittens</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.atmosbot.com/v1/&lt;exchange&gt;/symbol/ohlcv/latest"</span> <span class="se">\</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="s">"api.atmosbot.com"</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s">''</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'x-atmos-key'</span><span class="p">:</span> <span class="s">'youratmosapikey'</span><span class="p">,</span>
+  <span class="s">''</span><span class="p">:</span> <span class="s">'
+
+'</span>
+<span class="p">}</span>
+<span class="n">conn</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"GET"</span><span class="p">,</span> <span class="s">"/v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/latest"</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.atmosbot.com/v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/latest"</span> <span class="se">\</span>
   <span class="nt">-H</span> <span class="s2">"Authorization: youratmosapikey"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code>
+<span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">withCredentials</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">meowmeowmeow</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">readystatechange</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">https://api.atmosbot.com/v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/latest</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="dl">"</span><span class="s2">x-atmos-key</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">youratmosapikey</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="dl">""</span><span class="p">,</span> <span class="dl">"</span><span class="se">\n\n</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -616,7 +672,7 @@ Remember — You need to add your Atmos API key to the header!
 </span></code></pre></div>
 <p>This endpoint returns the latest candle tick for a specific crypto currency pairing.</p>
 <h3 id='http-request-3'>HTTP Request</h3>
-<p><code>GET /v1/&lt;exchange&gt;/symbol/ohlcv/latest</code></p>
+<p><code>GET /v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/latest</code></p>
 <h1 id='errors'>Errors</h1>
 <aside class="notice">
 This section displays information related to the potential errors you could encounter whislt using Atmos API.
@@ -635,7 +691,7 @@ This section displays information related to the potential errors you could enco
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"statusCode"</span><span class="p">:</span><span class="w"> </span><span class="mi">404</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cannot GET /v1/&lt;exchange&gt;/ETHUSDT/ohlcv/abc"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cannot GET /v1/&lt;exchange&gt;/&lt;symbol&gt;/ohlcv/abc"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Not Found"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -687,7 +743,7 @@ This section displays information related to the potential errors you could enco
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">cURL</a>
-                <a href="#" data-language-name="ruby">ruby</a>
+                <a href="#" data-language-name="c">C#</a>
                 <a href="#" data-language-name="python">python</a>
                 <a href="#" data-language-name="javascript">javascript</a>
           </div>
