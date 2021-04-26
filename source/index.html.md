@@ -3,7 +3,7 @@ title: Atmos API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell: cURL
-  - ruby
+  - c: C#
   - python
   - javascript
 
@@ -22,52 +22,41 @@ code_clipboard: true
 
 Welcome to the Atmos API! You can use our API to access cryptocurrency OHLCV candle data from Binance & Kraken. This data can be utilised and itegrated into your custom application.
 
-We have language bindings in Curl, JavaScript, Python, and C#! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in cURL, JavaScript, Python, and C#! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
 Here's a simple guide to walk you through generating Atmos API keys. 
 
-Alternatively you can register for an API key at our [portal](http://api.atmosbot.com/api).
+Alternatively you can register for an API key at our [portal](https://api.atmosbot.com/api).
 
 
 # Authentication
 
-> To authorize, use this code:
+<>> To authorize, use this code:
 
-```ruby
-require 'kittn'
+```c
 
-api = Kittn::APIClient.authorize!('personalatmosapikey')
 ```
 
 ```python
-import kittn
 
-api = kittn.authorize('personalatmosapikey')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "https://api.atmosbot.com/v1/<exchange>/pairs" \
-  -H "x-atmos-key: personalatmosapikey"
 ```
 
 ```javascript
-const kittn = require('kittn');
 
-let api = kittn.authorize('personalatmosapikey');
+
 ```
 
-> Make sure to replace `personalatmosapikey` with your API key.
+<>> Make sure to replace `youratmosapikey` with your API key.
 
 You can authenticate API keys to allow access the cryptocurrency candle data. 
 
 Atmos Authentication is header-based, and requires one parameter x-atmos-key:
 Your personalised API key is required for all API requests to the server in a header that looks like the following:
 
-`x-atmos-key: personalatmosapikey`
+`x-atmos-key: youratmosapikey`
 
 <aside class="notice">
-You must replace <code>personalatmosapikey</code> with your personal API key.
+You must replace <code>youratmosapikey</code> with your personal API key.
 </aside>
 
 
@@ -81,30 +70,57 @@ Atmos API requests are capped at 20 requests per minute. Exceeding this threshol
 
 ## Get All Pairs
 
-```ruby
-require 'kittn'
+```c
+var client = new RestClient("https://api.atmosbot.com/v1/<exchange>/pairs/");
+client.Timeout = -1;
+var request = new RestRequest(Method.GET);
+request.AddHeader("x-atmos-key", "youratmosapikey");
+request.AddHeader("", "
 
-api = Kittn::APIClient.authorize!('personalatmosapikey')
-api.kittens.get
+");
+IRestResponse response = client.Execute(request);
+Console.WriteLine(response.Content);
 ```
 
 ```python
-import kittn
+import http.client
 
-api = kittn.authorize('personalatmosapikey')
-api.kittens.get()
+conn = http.client.HTTPSConnection("api.atmosbot.com")
+payload = ''
+headers = {
+  'x-atmos-key': 'youratmosapikey',
+  '': '
+
+'
+}
+conn.request("GET", "/v1/binance/pairs/", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
 ```
 
 ```shell
-curl "http://api.atmosbot.com/v1/<exchange>/pairs" \
-  -H "x-atmos-key: personalatmosapikey"
+# With shell, you can just pass the correct header with each request
+curl "https://api.atmosbot.com/v1/<exchange>/pairs" \
+  -H "x-atmos-key: youratmosapikey"
 ```
 
-```javascript
-const kittn = require('kittn');
 
-let api = kittn.authorize('personalatmosapikey');
-let kittens = api.kittens.get();
+```javascript
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function() {
+  if(this.readyState === 4) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("GET", "https://api.atmosbot.com/v1/<exchange>/pairs/");
+xhr.setRequestHeader("x-atmos-key", "youratmosapikey");
+xhr.setRequestHeader("", "\n\n");
+
+xhr.send();
 ```
 
 > The above command returns JSON structured like this:
@@ -135,13 +151,13 @@ This endpoint retrieves all crypto currency pairings from a given exchange.
 
 `GET http://api.atmosbot.com/v1/<exchange>/pairs/`
 
-`<exchange>` | must be changed to supported exchange of your choice `kraken` or `binance`.
+`<exchange>` | must be changed to supported exchange of your choice `kraken` , `binance` or `coinbase`.
 
 ### Query Parameters
 
 Parameter | Type  | Required  |  Description
 ---------  | ----------- | ---------  | ----------- | 
-`<exchange>`    |   Striing | Yes | must be changed to supported exchange of your choice `kraken` or `binance`.
+`<exchange>`    |   Striing | Yes | must be changed to supported exchange of your choice `kraken` , `binance` or `coinbase`.
 
 
 
@@ -151,30 +167,55 @@ Remember — You need to add your Atmos API key to the header!
 
 ## Specific Pair OHLCV
 
-```ruby
-require 'kittn'
+```c
+var client = new RestClient("https://api.atmosbot.com/v1/<exchange>/<symbol>/ohlcv");
+client.Timeout = -1;
+var request = new RestRequest(Method.GET);
+request.AddHeader("x-atmos-key", "youratmosapikey");
+request.AddHeader("", "
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
+");
+IRestResponse response = client.Execute(request);
+Console.WriteLine(response.Content);
 ```
 
 ```python
-import kittn
+import http.client
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
+conn = http.client.HTTPSConnection("api.atmosbot.com")
+payload = ''
+headers = {
+  'x-atmos-key': 'youratmosapikey',
+  '': '
+
+'
+}
+conn.request("GET", "/v1/<exchange>/<symbol>/ohlcv", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
 ```
 
 ```shell
-curl "http://api.atmosbot.com/v1/<exchange>/symbol/ohlcv" \
-  -H "x-atmos-key: personalatmosapikey"
+curl "http://api.atmosbot.com/v1/<exchange>/<symbol>/ohlcv" \
+  -H "x-atmos-key: youratmosapikey"
 ```
 
 ```javascript
-const kittn = require('kittn');
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+xhr.addEventListener("readystatechange", function() {
+  if(this.readyState === 4) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("GET", "https://api.atmosbot.com/v1/<exchange>/<symbol>/ohlcv");
+xhr.setRequestHeader("x-atmos-key", "youratmosapikey");
+xhr.setRequestHeader("", "\n\n");
+
+xhr.send();
 ```
 
 > The above command returns JSON structured like this:
@@ -206,10 +247,11 @@ let max = api.kittens.get(2);
 This endpoint retrieves a specific pair. 
 
 <aside class="warning">Replace <code>&lt;exchange&gt;</code> with the exchange of your choice.</aside>
+<aside class="warning">Replace <code>&lt;symbol&gt;</code> with the crypto pairing of your choice e.g. BTCUSDT .</aside>
 
 ### HTTP Request
 
-`GET /v1/<exchange>/symbol/ohlcv`
+`GET /v1/<exchange>/<symbol>/ohlcv`
 
 
 ###  Parameters
@@ -223,19 +265,19 @@ end_time |  String | Optional | sets end time of candle ticks ..Format ISO 8601 
 
 ###  Limit Parameters
 
-`GET v1/<exchange>/symbol/ohlcv/?limit=2`
+`GET v1/<exchange>/<symbol>/ohlcv/?limit=2`
 
 
 
-`GET /v1/<exchange>/symbol/ohlcv/?page=5`
+`GET /v1/<exchange>/<symbol>/ohlcv/?page=5`
 
 
 
-`GET /v1/<exchange>/symbol/ohlcv/?start_time=2021-04-09T10:20:00.000Z`
+`GET /v1/<exchange>/<symbol>/ohlcv/?start_time=2021-04-09T10:20:00.000Z`
 
 
 
-`GET /v1/<exchange>/symbol/ohlcv/?end_time=2021-04-09T10:50:00.000Z`
+`GET /v1/<exchange>/<symbol>/ohlcv/?end_time=2021-04-09T10:50:00.000Z`
 
 
 
@@ -246,7 +288,7 @@ All of the aformentioned parameters can be combined, composing of a series of fi
 
 Example:
 
-`GET v1/<exchange>/symbol/ohlcv/?end_time=2021-04-09T10:50:00.000Z&page=0`
+`GET v1/<exchange>/<symbol>/ohlcv/?end_time=2021-04-09T10:50:00.000Z&page=0`
 
 > The request returns JSON structured like this:
 
@@ -285,30 +327,56 @@ Example:
 
 ## Pair Latest 
 
-```ruby
-require 'kittn'
+```c
+var client = new RestClient("https://api.atmosbot.com/v1/<exchange>/<symbol>/ohlcv/latest");
+client.Timeout = -1;
+var request = new RestRequest(Method.GET);
+request.AddHeader("x-atmos-key", "youratmosapikey");
+request.AddHeader("", "
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
+");
+IRestResponse response = client.Execute(request);
+Console.WriteLine(response.Content);
 ```
 
 ```python
-import kittn
+import http.client
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
+conn = http.client.HTTPSConnection("api.atmosbot.com")
+payload = ''
+headers = {
+  'x-atmos-key': 'youratmosapikey',
+  '': '
+
+'
+}
+conn.request("GET", "/v1/<exchange>/<symbol>/ohlcv/latest", payload, headers)
+res = conn.getresponse()
+data = res.read()
+print(data.decode("utf-8"))
 ```
 
 ```shell
-curl "http://api.atmosbot.com/v1/<exchange>/symbol/ohlcv/latest" \
-  -H "Authorization: personalatmosapikey"
+curl "http://api.atmosbot.com/v1/<exchange>/<symbol>/ohlcv/latest" \
+  -H "Authorization: youratmosapikey"
 ```
 
 ```javascript
-const kittn = require('kittn');
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function() {
+  if(this.readyState === 4) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("GET", "https://api.atmosbot.com/v1/<exchange>/<symbol>/ohlcv/latest");
+xhr.setRequestHeader("x-atmos-key", "youratmosapikey");
+xhr.setRequestHeader("", "\n\n");
+
+xhr.send();
 ```
 
 > The above command returns JSON structured like this:
@@ -330,7 +398,7 @@ This endpoint returns the latest candle tick for a specific crypto currency pair
 
 ### HTTP Request
 
-`GET /v1/<exchange>/symbol/ohlcv/latest`
+`GET /v1/<exchange>/<symbol>/ohlcv/latest`
 
 
 

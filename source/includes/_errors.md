@@ -18,7 +18,7 @@ This section displays information related to the potential errors you could enco
 ```json
 {
     "statusCode": 404,
-    "message": "Cannot GET /v1/<exchange>/ETHUSDT/ohlcv/abc",
+    "message": "Cannot GET /v1/<exchange>/<symbol>/ohlcv/abc",
     "error": "Not Found"
 }
 ```
